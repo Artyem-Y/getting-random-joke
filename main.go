@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -29,7 +28,7 @@ type JokeResp struct {
 }
 
 func handler(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "handler\n")
+	log.Println("handler")
 }
 
 func getRandomJoke() (string, error) {

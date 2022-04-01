@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 )
@@ -29,6 +30,16 @@ type JokeResp struct {
 
 func handler(w http.ResponseWriter, req *http.Request) {
 	log.Println("handler")
+}
+
+// should be used for avoiding unnecessary allocations during string concatenations
+func join(strs ...string) string {
+	var sb strings.Builder
+	for _, str := range strs {
+		sb.WriteString(str)
+	}
+	
+	return sb.String()
 }
 
 func getRandomJoke() (string, error) {
@@ -57,7 +68,7 @@ func getRandomJoke() (string, error) {
 		return "", err
 	}
 
-	return person.FirstName + " " + person.LastName + "'s " + jokeResp.Value.Joke, nil
+	return join(person.FirstName, " ", person.LastName, "'s ", jokeResp.Value.Joke), nil
 }
 
 func main() {
